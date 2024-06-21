@@ -1,0 +1,110 @@
+package internship;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class CurrencyConverterGUI {
+    private static final double USD_TO_EUR_RATE = 0.85;
+    private static final double EUR_TO_USD_RATE = 1.18;
+
+    public static void main(String[] args) {
+        // Create the main frame
+        JFrame frame = new JFrame("Currency Converter");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 400);
+        
+        // Create a panel to hold the components with GridBagLayout
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(60, 63, 65)); // Dark background
+        frame.add(panel);
+        placeComponents(panel);
+
+        // Make the frame visible
+        frame.setVisible(true);
+    }
+
+    private static void placeComponents(JPanel panel) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        // Create welcome label
+        JLabel welcomeLabel = new JLabel("Welcome to the Currency Converter!", JLabel.CENTER);
+        welcomeLabel.setForeground(Color.WHITE);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(welcomeLabel, gbc);
+
+        // Create USD to EUR button
+        JButton usdToEurButton = new JButton("Convert USD to EUR");
+        usdToEurButton.setBackground(new Color(52, 152, 219)); // Light blue button
+        usdToEurButton.setForeground(Color.WHITE);
+        usdToEurButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(usdToEurButton, gbc);
+
+        // Create EUR to USD button
+        JButton eurToUsdButton = new JButton("Convert EUR to USD");
+        eurToUsdButton.setBackground(new Color(46, 204, 113)); // Light green button
+        eurToUsdButton.setForeground(Color.WHITE);
+        eurToUsdButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(eurToUsdButton, gbc);
+
+        // Create text fields for input and output
+        JTextField inputField = new JTextField(20);
+        inputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        panel.add(inputField, gbc);
+
+        JLabel resultLabel = new JLabel("Result:");
+        resultLabel.setForeground(Color.WHITE);
+        resultLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        panel.add(resultLabel, gbc);
+
+        JTextField resultField = new JTextField(20);
+        resultField.setFont(new Font("Arial", Font.PLAIN, 14));
+        resultField.setEditable(false);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panel.add(resultField, gbc);
+
+        // Add action listeners to buttons
+        usdToEurButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String inputText = inputField.getText();
+                try {
+                    double usdAmount = Double.parseDouble(inputText);
+                    double eurAmount = usdAmount * USD_TO_EUR_RATE;
+                    resultField.setText(String.format("%.2f EUR", eurAmount));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(panel, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        eurToUsdButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String inputText = inputField.getText();
+                try {
+                    double eurAmount = Double.parseDouble(inputText);
+                    double usdAmount = eurAmount * EUR_TO_USD_RATE;
+                    resultField.setText(String.format("%.2f USD", usdAmount));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(panel, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+}
